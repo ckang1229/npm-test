@@ -19,12 +19,13 @@ var webpackConfig = {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
-                    extractCSS: true
+                    loaders: {
+                        css: ExtractTextPlugin.extract({
+                            use: 'css-loader',
+                            fallback: 'vue-style-loader' // <- 这是vue-loader的依赖，所以如果使用npm3，则不需要显式安装
+                        })
+                    }
                 }
-            },
-            {
-                test: /\.css$/,
-                loader: 'style-loader!css-loader'
             },
             {
                 test: /\.js$/,
