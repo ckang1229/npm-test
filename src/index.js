@@ -4,4 +4,6 @@ const install = (Vue) => {
     Vue.component('test', test)
 }
 
-export default install
+export default {
+    install
+}

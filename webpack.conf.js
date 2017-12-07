@@ -5,12 +5,12 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 function resolve(dir){
     return path.join(__dirname, dir)
 }
-console.log(resolve('lib'))
 
 var webpackConfig = {
     entry: './src/index.js',
     output: {
-        path: __dirname,
+        libraryTarget: "commonjs2",
+        path: resolve('lib'),
         filename: "bundle.js"
     },
     module: {
@@ -20,16 +20,14 @@ var webpackConfig = {
                 loader: 'vue-loader',
                 options: {
                     loaders: {
-                        css: ExtractTextPlugin.extract({
-                            use: 'css-loader',
-                            fallback: 'vue-style-loader' // <- 这是vue-loader的依赖，所以如果使用npm3，则不需要显式安装
-                        })
+                        css: 'vue-style-loader!css-loader',
+                        less: 'vue-style-loader!css-loader!less-loader'
                     }
                 }
             },
             {
                 test: /\.css$/,
-                loader: 'css-loader'
+                loader: 'style-loader!css-loader'
             },
             {
                 test: /\.js$/,
@@ -40,7 +38,7 @@ var webpackConfig = {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                    limit: 10000,
+                    limit: 1000,
                     name: 'static/img/[name].[hash:7].[ext]'
                 }
             },
@@ -48,7 +46,7 @@ var webpackConfig = {
                 test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                    limit: 10000,
+                    limit: 1000,
                     name: 'static/media/[name].[hash:7].[ext]'
                 }
             },
@@ -56,15 +54,12 @@ var webpackConfig = {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                    limit: 10000,
+                    limit: 1000,
                     name: 'static/font/[name].[hash:7].[ext]'
                 }
             }
         ]
-    },
-    plugins: [
-        new ExtractTextPlugin('style.css')
-    ]
+    }
 }
 
 webpack(webpackConfig, error => {

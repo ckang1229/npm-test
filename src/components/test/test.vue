@@ -1,7 +1,7 @@
 <template>
-    <t-button>
+    <el-button type="primary" :loading="true">
         <slot></slot>
-    </t-button>
+    </el-button>
 </template>
 
 <script type="text/ecmascript-6">
@@ -9,7 +9,9 @@
 
     export default {
         components: {
-            TButton: Button
+            ElButton: Button
         }
     }
 </script>
+
+
